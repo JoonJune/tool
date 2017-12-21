@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>工具</title>
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Import Css File -->
+    <link rel="stylesheet" type="text/css" href="../../lib/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../../css/basic-theme.css">
+    <link rel="stylesheet" type="text/css" href="../../lib/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="../../css/basic.css">
+    
+    <!-- Import Javascript File -->
+    <script type="text/javascript" src="../../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/jquery.cookie.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="../../lib/easyui/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../lib/easyui/themes/icon.css">
+    
+    <script type="text/javascript" src="../../lib/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../lib/easyui/local/easyui-lang-zh_CN.js"></script>
+  </head>
+
+  <body class=""> 
+    <!-- top layout -->
+    <!-- left layout -->
+    <!-- content navi layout -->
+    <div id="baseContentDiv" class="content">
+      <div class="container-fluid-self">
+        <div class="block-self fl">
+            <span>来源</span>
+            <table id="srcList"></table>
+        </div>
+        <div class="block-self fl">
+            <span>目标</span>
+            <table id="desList"></table>
+        </div>
+        <div class="fl" style="margin-top:100px;">
+            <a id="saveBtn" href="javascript:void(0);">保存</a>
+        </div>
+        <div class="block-self fl">
+            <span>对比列表</span>
+            <table id="diffTbList"></table>
+        </div>
+        <div id="exportDiv" class="fl" style="clear:both; margin-top: 10px; display: none">
+            <a id="exportBtn" href="javascript:void(0);">导出sql文件</a>
+        </div>
+        <div class="block-self fl" style="clear:both; margin-top: 10px; width: 80%; height: 400px; overflow:auto;" id="result"></div>
+      </div>
+    </div>
+    <div id="DIALOG"></div>
+    <script src="../../lib/bootstrap/js/bootstrap.js"></script>
+    <script src="../../js/index.js"></script>
+  </body>
+</html>

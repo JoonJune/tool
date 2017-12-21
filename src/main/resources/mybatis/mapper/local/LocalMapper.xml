@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tool.mapper.local.LocalMapper" >
+  <insert id="insertBatchTableInfo">
+     INSERT INTO table_info
+     (ENV, TABLE_SCHEMA, TABLE_NAME, TABLE_COMMENT, COLUMN_NAME, COLUMN_TYPE, COLUMN_DEFAULT, COLUMN_COMMENT, COLLATION_NAME, IS_NULLABLE, COLUMN_KEY, EXTRA, ORDINAL_POSITION) 
+     VALUES
+     <foreach collection="list" item="item" index="index" separator=",">
+     (
+     #{item.env}, #{item.tableSchema}, #{item.tableName}, #{item.tableComment}, #{item.columnName}, #{item.columnType}
+     , #{item.columnDefault}, #{item.columnComment}, #{item.collationName}, #{item.isNullable}, #{item.columnKey}
+     , #{item.extra}, #{item.ordinalPosition}
+     )
+     </foreach>
+  </insert>
+  <insert id="insertBatchIndexInfo">
+    INSERT INTO index_info
+    (ENV, TABLE_SCHEMA, TABLE_NAME, INDEX_NAME, COLUMN_NAME)
+    VALUES 
+     <foreach collection="list" item="item" index="index" separator=",">
+     (
+     #{item.env}, #{item.tableSchema}, #{item.tableName}, #{item.indexName}, #{item.columnName}
+     )
+     </foreach>
+  </insert>
+  <insert id="insertDiffTableInfo">
+    INSERT INTO diff_table_info (tb_schema, first_db_id, second_db_id, memo) VALUES (#{tbSchema}, #{firstDbId}, #{secondDbId}, #{memo});
+  </insert>
+  <delete id="initCheckDB">
+    TRUNCATE TABLE table_info;
+    TRUNCATE TABLE index_info;
+  </delete>
+  <select id="dbDiff" resultType="TableInfoDto" statementType="CALLABLE" >    
+      {call db_diff()}  
+  </select>
+  <select id="selectOneDiffTableInfo" resultType="DiffTableInfoDto">
+	select t1.tb_schema   as tb_schema
+	     , t2.db_ip       as first_db_ip
+	     , t2.db_port     as first_db_port
+	     , t2.db_driver   as first_db_driver
+	     , t2.db_user     as first_db_user
+	     , t2.db_password as first_db_password
+	     , t3.db_ip       as second_db_ip
+	     , t3.db_port     as second_db_port
+	     , t3.db_driver   as second_db_driver
+	     , t3.db_user     as second_db_user
+	     , t3.db_password as second_db_password
+	  from diff_table_info t1
+	  left join db_info    t2 on t1.first_db_id = t2.id
+	  left join db_info    t3 on t1.second_db_id = t3.id
+	 where t1.id = #{id}
+  </select>
+  <select id="selectDbInfo" resultType="DbInfoDto">
+    select id
+         , db_ip
+         , db_port
+         , db_driver
+         , db_user
+         , db_password
+         , memo 
+      from db_info
+  </select>
+  <select id="selectDiffTableInfo" resultType="DiffTableInfoDto">
+	select t1.id           as id
+	     , t1.tb_schema    as tb_schema
+	     , t1.first_db_id  as first_db_id
+	     , t1.second_db_id as second_db_id
+	     , t2.db_ip        as first_db_ip
+	     , t3.db_ip        as second_db_ip
+	     , t1.memo         as memo
+	  from diff_table_info t1
+	  left join db_info    t2 on t1.first_db_id  = t2.id
+	  left join db_info    t3 on t1.second_db_id = t3.id
+	 order by t1.tb_schema, t1.id
+  </select>
+</mapper>
